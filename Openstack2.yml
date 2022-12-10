@@ -1,0 +1,35 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Update Repo Index
+    apt:
+      upgrade: dist
+      update_cache: yes
+    changed_when: false
+
+- hosts: webdb_server
+  become: true
+  tasks:
+
+  - name: Cinder Install
+    apt:
+      name:
+        - cinder-api
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Neutron Install
+    apt:
+      name:
+        - neutron-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Horizon Install
+    apt:
+      name:
+        - openstack-dashboard
+      state: latest
+    when: ansible_distribution == "Ubuntu"
